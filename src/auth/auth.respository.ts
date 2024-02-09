@@ -2,6 +2,7 @@ import { ConflictException, InternalServerErrorException } from "@nestjs/common"
 import { DataSource, Repository } from "typeorm";
 import { User } from "./user.entity";
 import { Injectable } from "@nestjs/common";
+import * as bcrypt from 'bcryptjs';
 import { AuthCreateDto } from "./dto/auth-create-dto";
 
 
@@ -15,8 +16,10 @@ export class UserRepository extends Repository<User> {
     async createUser(authCreateDto: AuthCreateDto): Promise<void>{
         const { address, passwd, email, nickname  } = authCreateDto;
 
-       
-        const user = this.create({address, passwd, email:email, nickname:nickname})
+        const salt = await bcrypt.genSalt();
+        const hashedPasswd = await bcrypt.hash(passwd, salt);
+
+        const user = this.create({address, passwd: hashedPasswd, salt: salt, email:email, nickname:nickname})
         try {
             await this.save(user)
         }catch (error) {

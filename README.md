@@ -7,18 +7,28 @@ This is a simple API server
 1. Install the dependencies
 
 ```bash
-npm install
+$ npm install
 ```
 
 2. Run the server
 
 ```bash
-npm start
+$ npm start
 ```
 
 3. The server will be running on port 3000
 
 ---
+
+## Docker
+
+```bash
+$ cd docker
+```
+
+```bash
+$ docker-compose -f docker-compose-mysql.yml up
+```
 
 ## 📌 commit, merge 규칙
 

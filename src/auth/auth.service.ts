@@ -1,14 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from './user.respository';
-import { AuthCreateDto } from './dto/auth-create-dto';
+import { AuthCreateDto } from './dto/auth.create.dto';
+import { AuthLoginDto } from './dto/auth.login.dto';
+import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
+import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
+import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
+        private jwtService: JwtService,
         private userRepository: UserRepository,
     ) { }
 
     async signUp(authCreateDto: AuthCreateDto): Promise<void> {
         return this.userRepository.createUser(authCreateDto);
+    }
+
+    async guestSignUp(authCreateDto: AuthCreateGuestDto): Promise<void> {
+        return this.userRepository.createGuestUser(authCreateDto);
+    }
+
+    async signIn(authLoginDto: AuthLoginDto): Promise<{accessToken: string}> {
+        const { address, passwd } = authLoginDto;
+        const user = await this.userRepository.findOne({ where: { address: address } });
+        const nickname = user.nickname;
+
+        if(user && (await bcrypt.compare(passwd, user.passwd))) {
+            const payload = { nickname};
+            const accessToken = await this.jwtService.sign(payload);
+
+            return { accessToken };
+        }  else {
+            throw new UnauthorizedException('login failed')
+        }
+    }
+
+    async guestSignIn(authLoginDto: AuthLoginGuestDto): Promise<{ accessToken: string }> {
+             const { guestId} = authLoginDto;
+        const user = await this.userRepository.findOne({ where: { guestId: guestId } });
+        const nickname = user.nickname;
+        if(user && user.guestId === guestId) {
+     
+            const payload = { nickname };
+            const accessToken = await this.jwtService.sign(payload);
+
+            return { accessToken };
+        }  else {
+            throw new UnauthorizedException('login failed')
+        }
     }
 }

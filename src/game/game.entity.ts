@@ -1,0 +1,24 @@
+import { User } from "src/auth/user.entity";
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, JoinColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Role } from "./role.entity";
+
+
+@Entity({ name: 'tb_game_result' })
+export class Game extends BaseEntity {
+    @PrimaryGeneratedColumn({ name: "result_id" })
+    gameId: number;
+
+    @ManyToOne(type => User, {createForeignKeyConstraints: false, nullable: false})
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' }) 
+    userId: User;
+
+    @ManyToOne(type => Role, {createForeignKeyConstraints: false, nullable: false})
+    @JoinColumn({ name: 'role_id', referencedColumnName: 'roleId' }) 
+    roleId: Role;
+
+    @Column({ type: 'tinyint', name: 'is_win' })
+    isWin: boolean;
+
+    @Column({ type: 'timestamp', name: 'played_at', default: () => 'CURRENT_TIMESTAMP' })
+    playedAt: Date;
+}

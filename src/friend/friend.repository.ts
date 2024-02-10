@@ -23,12 +23,8 @@ export class FriendRepository extends Repository<Friend> {
             friendId: requestId.toUser,
             friendRequestId: requestId
         })
-      
-        try {
-            await this.save([Friend1, Friend2]);
-        } catch (error) {
-            throw error;
-        }
-          return
+
+        return await this.save([Friend1, Friend2]);
+    
     }
 }

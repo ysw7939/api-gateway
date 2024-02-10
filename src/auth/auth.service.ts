@@ -26,8 +26,8 @@ export class AuthService {
         const { address, passwd } = authLoginDto;
         const user = await this.userRepository.findOne({ where: { address: address } });
         const nickname = user.nickname;
-
-        if(user && (await bcrypt.compare(passwd, user.passwd))) {
+        const hashedPasswd = await bcrypt.hash(passwd, user.salt);
+        if(user &&  user.passwd == hashedPasswd) {
             const payload = { nickname};
             const accessToken = await this.jwtService.sign(payload);
 

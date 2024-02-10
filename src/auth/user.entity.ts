@@ -4,7 +4,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique }
 @Entity({ name: 'tb_user' })
 export class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn({primaryKeyConstraintName: 'user_id'})
+    @PrimaryGeneratedColumn({ name:'user_id'})
     userId: number;
 
     @Column({nullable: true, unique:true})
@@ -33,5 +33,6 @@ export class User extends BaseEntity {
     
     @Column({nullable: true, name: 'guest_id', unique:true})
     guestId: string;
+
 
 }

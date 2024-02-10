@@ -1,35 +1,34 @@
-import { ConflictException, InternalServerErrorException } from "@nestjs/common";
-import { Brackets, DataSource, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
-
-import {FriendRequest } from "./friend.request.entity";
-
+import { Friend } from "./friend.entity";
+import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { User } from "src/auth/user.entity";
+import { FriendRequest } from "./friend.request.entity";
 
 
 @Injectable()
-export class FriendRepository extends Repository<FriendRequest>{
-    
-
-    constructor(dataSource: DataSource, ) {
-        super(FriendRequest, dataSource.createEntityManager());
-
+export class FriendRepository extends Repository<Friend> {
+    constructor(dataSource: DataSource) {
+        super(Friend, dataSource.createEntityManager());
     }
 
-    async createFriend(fromUser: User, toUser: User ): Promise<FriendRequest>{
-        const friend = this.create({ fromUser, toUser })
-        let friendRequest;
+    async createFriend(requestId: FriendRequest): Promise<Friend[]> {
+        const Friend1 = this.create({ 
+            userId: requestId.toUser,
+            friendId: requestId.fromUser,
+            friendRequestId: requestId
+        })
+  
+        const Friend2 = this.create({ 
+            userId: requestId.fromUser,
+            friendId: requestId.toUser,
+            friendRequestId: requestId
+        })
+      
         try {
-            friendRequest =  this.save(friend)
-        }catch (error) {
-            if(error.code === '23505') {
-                throw new ConflictException('Existing username');
-            } else {
-                throw new InternalServerErrorException();
-            }
+            await this.save([Friend1, Friend2]);
+        } catch (error) {
+            throw error;
         }
-
-        return friendRequest;
+          return
     }
-
 }

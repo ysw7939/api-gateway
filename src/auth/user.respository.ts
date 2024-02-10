@@ -3,7 +3,8 @@ import { DataSource, Repository } from "typeorm";
 import { User } from "./user.entity";
 import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
-import { AuthCreateDto } from "./dto/auth-create-dto";
+import { AuthCreateDto } from "./dto/auth.create.dto";
+import { AuthCreateGuestDto } from "./dto/auth.guest.create.dto";
 
 
 @Injectable()
@@ -13,22 +14,26 @@ export class UserRepository extends Repository<User> {
         super(User, dataSource.createEntityManager());
     }
 
-    async createUser(authCreateDto: AuthCreateDto): Promise<void>{
+    async createUser(authCreateDto: AuthCreateDto): Promise<any>{
         const { address, passwd, email, nickname  } = authCreateDto;
 
         const salt = await bcrypt.genSalt();
         const hashedPasswd = await bcrypt.hash(passwd, salt);
 
         const user = this.create({address, passwd: hashedPasswd, salt: salt, email:email, nickname:nickname})
-        try {
-            await this.save(user)
-        }catch (error) {
-            if(error.code === '23505') {
-                throw new ConflictException('Existing username');
-            } else {
-                throw new InternalServerErrorException();
-            }
-        }
+
+        await this.save(user)
+        return "success"
+    }
+
+
+    async createGuestUser(authCreateDto: AuthCreateGuestDto): Promise<any> {
+        const { guestId, nickname } = authCreateDto;
+
+        const user = this.create({ guestId, nickname });
+       
+        await this.save(user)
+        return "success"
     }
     
     async findUser(userId: number): Promise<User> {

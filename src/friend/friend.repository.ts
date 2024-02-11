@@ -11,7 +11,7 @@ export class FriendRepository extends Repository<Friend> {
         super(Friend, dataSource.createEntityManager());
     }
 
-    async createFriend(requestId: FriendRequest): Promise<Friend[]> {
+    async createFriend(requestId: FriendRequest): Promise<void> {
         const Friend1 = this.create({ 
             userId: requestId.toUser,
             friendId: requestId.fromUser,
@@ -24,7 +24,7 @@ export class FriendRepository extends Repository<Friend> {
             friendRequestId: requestId
         })
 
-        return await this.save([Friend1, Friend2]);
+        await this.save([Friend1, Friend2]);
     }
 
     async userFriend(userId: number): Promise<Friend[]> {

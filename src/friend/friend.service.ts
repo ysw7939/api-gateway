@@ -58,4 +58,7 @@ export class FriendService {
         return await this.friendRequestRepository.findToUser(userId);
     }
 
+    async receivedFriendList(userId: number): Promise<Friend[]> {
+        return await this.friendRequestRepository.findFromUser(userId);
+    }
 }

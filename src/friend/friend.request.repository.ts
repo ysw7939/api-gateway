@@ -53,4 +53,18 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
             .where("to_user = :userId", { userId: userId })
             .execute()
     }
+
+    async findFromUser(userId: number): Promise<Friend[]> {
+        return await this.createQueryBuilder()
+            .select([
+                "friend_request_id",
+                "from_user",
+                "to_user",
+                "is_friend",
+                "created_at",
+                "isRead"
+            ])
+            .where("from_user = :userId", { userId: userId })
+            .execute()
+    }
 }

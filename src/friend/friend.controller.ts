@@ -28,4 +28,9 @@ export class FriendController {
     requestFriend(@Param('id')  id: number): Promise<Friend[]> {
         return this.friendService.requestFriendList(id);
     }
+
+    @Get('/received-list/:id')
+    receviedFriend(@Param('id')  id: number): Promise<Friend[]> {
+        return this.friendService.receivedFriendList(id);
+    }
 }

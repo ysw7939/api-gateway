@@ -7,10 +7,12 @@ import { GameRepository } from './game.repository';
 import { RoleRepository } from './role.repository';
 import { UserRepository } from 'src/auth/user.respository';
 import { Role } from './role.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Game,Role])
+    TypeOrmModule.forFeature([Game, Role]),
+    AuthModule
   ],
   controllers: [GameController],
   providers: [GameService, GameRepository, RoleRepository, UserRepository]

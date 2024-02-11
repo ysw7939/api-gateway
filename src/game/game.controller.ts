@@ -9,7 +9,7 @@ export class GameController {
     constructor(private gameService: GameService) { }
 
     @Post('/result')
-    create(@Body(ValidationPipe) gameResultDto: GameResultDto): Promise<Game> {
+    create(@Body(ValidationPipe) gameResultDto: GameResultDto): Promise<any> {
         return this.gameService.gameRecord(gameResultDto);
     }
 }

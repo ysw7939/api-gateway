@@ -12,13 +12,20 @@ export class GameRepository extends Repository<Game> {
         super(Game, dataSorce.createEntityManager());
     }
 
-    async createResult(userId: User, roleId: Role, isWin: boolean): Promise<Game> {
+    async createResult(userId: User, roleId: Role, isWin: boolean): Promise<any> {
 
         const game = this.create({ userId, roleId, isWin })
-        let result;
+        
 
-        result = await this.save(game)
+        const result = await this.createQueryBuilder()
+            .insert()
+            .into(Game)
+            .values({
+                userId: userId,
+                roleId: roleId,
+                isWin: isWin
+            }).execute()
      
-        return result;
+        return "success";
     }
 }

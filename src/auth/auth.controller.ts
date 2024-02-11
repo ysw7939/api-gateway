@@ -20,7 +20,7 @@ export class AuthController {
         return this.authService.signIn(authLoginDto);
     }
 
-        @Post('/guest/signup')
+    @Post('/guest/signup')
     guestSignUp(@Body(ValidationPipe) authCreateDto: AuthCreateGuestDto): Promise<void> {
         return this.authService.guestSignUp(authCreateDto);
     }

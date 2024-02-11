@@ -28,11 +28,12 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
 
         const select = await this.createQueryBuilder()
             .select([
+                "friend_request_id",
+                "from_user",
+                "to_user",
                 "is_friend",
                 "created_at",
-                "isRead",
-                "from_user",
-                "to_user"
+                "isRead"
             ])
             .where("friend_request_id = :id", { id: id })
             .execute()

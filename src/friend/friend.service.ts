@@ -25,7 +25,7 @@ export class FriendService {
         return this.friendRequestRepository.createFriend(user1,user2);
     }
 
-    async friendCreate(friendComplyDto: FriendComplyDto): Promise<Friend[]> {
+    async friendCreate(friendComplyDto: FriendComplyDto): Promise<string> {
         const { friendRequestId } = friendComplyDto;
        
         const friendRequest = await this.friendRequestRepository.findOne({
@@ -34,7 +34,20 @@ export class FriendService {
                 fromUser:true
         } });
         await this.friendRequestRepository.update(friendRequestId, { isFriend: true });
-        return await this.friendRepository.createFriend(friendRequest)
+        await this.friendRepository.createFriend(friendRequest)
+
+        // await this.friendRequestRepository.createQueryBuilder()
+        //             .select([
+        //                 "friend_request_id",
+        //                 "from_user",
+        //                 "to_user",
+        //                 "is_friend",
+        //                 "created_at",
+        //                 "isRead"
+        //             ])
+        //             .where("friend_request_id = :id", { id: friendRequestId })
+        //             .execute()
+        return "친구요청이 수락되었습니다."
     }
 
     async findFriendList(userId: number): Promise<Friend[]> {

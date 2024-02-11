@@ -15,7 +15,7 @@ export class FriendController {
     }
 
     @Put('/comply')
-    comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto): Promise<Friend[]> {
+    comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto): Promise<string> {
         return this.friendService.friendCreate(friendComplyDto);
     }
 

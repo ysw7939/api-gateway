@@ -39,4 +39,14 @@ export class UserRepository extends Repository<User> {
     async findUser(userId: number): Promise<User> {
         return this.findOne({ where: { userId } });
     }
+
+    async checkUsername(userName: string): Promise<boolean> {
+        if (await this.exists({ where: { address: userName } })) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    
 }

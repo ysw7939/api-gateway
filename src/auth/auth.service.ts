@@ -51,4 +51,8 @@ export class AuthService {
             throw new UnauthorizedException('login failed')
         }
     }
+
+    async checkAddress(address: string): Promise<boolean> {
+        return this.userRepository.checkUsername(address);
+    }
 }

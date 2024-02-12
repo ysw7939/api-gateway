@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthCreateDto } from './dto/auth.create.dto';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth.login.dto';
@@ -28,5 +28,10 @@ export class AuthController {
     @Post('guest/signin')
     guestSignIn(@Body(ValidationPipe) authLoginDto: AuthLoginGuestDto): Promise<{ accessToken: string }> {
         return this.authService.guestSignIn(authLoginDto);
+    }
+
+    @Get('check-username/:userName')
+    checkUsername(@Param('userName') userName: string): Promise<boolean> {
+        return this.authService.checkAddress(userName);
     }
 }

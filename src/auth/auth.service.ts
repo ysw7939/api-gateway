@@ -55,4 +55,8 @@ export class AuthService {
     async checkAddress(address: string): Promise<boolean> {
         return this.userRepository.checkUsername(address);
     }
+
+    async checkNickname(nickname: string): Promise<boolean> {
+        return this.userRepository.checkNickname(nickname);
+    }
 }

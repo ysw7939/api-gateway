@@ -48,5 +48,13 @@ export class UserRepository extends Repository<User> {
         }
     }
 
+    async checkNickname(nickname: string): Promise<boolean> {
+        if (await this.exists({ where: { nickname: nickname } })) {
+            return false
+        } else {
+            return true
+        }
+    }
+
     
 }

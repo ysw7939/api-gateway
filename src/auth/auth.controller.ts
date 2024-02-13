@@ -34,4 +34,9 @@ export class AuthController {
     checkUsername(@Param('userName') userName: string): Promise<boolean> {
         return this.authService.checkAddress(userName);
     }
+
+    @Get('check-nickname/:nickname')
+    checkNickname(@Param('nickname') userName: string): Promise<boolean> {
+        return this.authService.checkNickname(userName);
+    }
 }

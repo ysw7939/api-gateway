@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth.login.dto';
 import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('auth')

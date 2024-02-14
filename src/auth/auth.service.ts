@@ -24,32 +24,38 @@ export class AuthService {
 
     async signIn(authLoginDto: AuthLoginDto): Promise<{accessToken: string}> {
         const { address, passwd } = authLoginDto;
-        const user = await this.userRepository.findOne({ where: { address: address } });
-        const nickname = user.nickname;
-        const hashedPasswd = await bcrypt.hash(passwd, user.salt);
-        if(user &&  user.passwd == hashedPasswd) {
-            const payload = { nickname};
-            const accessToken = await this.jwtService.sign(payload);
-
-            return { accessToken };
-        }  else {
-            throw new UnauthorizedException('login failed')
+        try {
+            const user = await this.userRepository.findOne({ where: { address: address } });
+            const nickname = user.nickname;
+            const hashedPasswd = await bcrypt.hash(passwd, user.salt);
+            if(user &&  user.passwd == hashedPasswd) {
+                const payload = { nickname};
+                const accessToken = await this.jwtService.sign(payload);
+                return { accessToken };
+            } else {
+                throw new UnauthorizedException('login failed')
+            }
+        } catch {
+              throw new UnauthorizedException('login failed')
         }
     }
 
     async guestSignIn(authLoginDto: AuthLoginGuestDto): Promise<{ accessToken: string }> {
-             const { guestId} = authLoginDto;
-        const user = await this.userRepository.findOne({ where: { guestId: guestId } });
-        const nickname = user.nickname;
-        if(user && user.guestId === guestId) {
-     
-            const payload = { nickname };
-            const accessToken = await this.jwtService.sign(payload);
-
-            return { accessToken };
-        }  else {
-            throw new UnauthorizedException('login failed')
+        const { guestId } = authLoginDto;
+        try {
+            const user = await this.userRepository.findOne({ where: { guestId: guestId } });
+            const nickname = user.nickname;
+            if(user && user.guestId === guestId) {
+                const payload = { nickname };
+                const accessToken = await this.jwtService.sign(payload);
+                return { accessToken };
+            }  else {
+                throw new UnauthorizedException('login failed')
+            }
+        } catch {
+             throw new UnauthorizedException('login failed')
         }
+     
     }
 
     async checkAddress(address: string): Promise<boolean> {

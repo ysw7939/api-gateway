@@ -7,7 +7,7 @@ import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('friend')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class FriendController {
     constructor(private friendService: FriendService) { }
     

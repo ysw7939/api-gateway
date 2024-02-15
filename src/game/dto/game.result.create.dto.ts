@@ -5,6 +5,8 @@ export class GameResultDto {
     userId: number;
     @IsNumber()
     roleId: number;
+    userSession: string;
+    roomSession: string;
     @IsBoolean()
     isWin: boolean;
 }

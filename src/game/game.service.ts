@@ -14,11 +14,11 @@ export class GameService {
     ) { }
 
     async gameRecord(gameResultDto: GameResultDto): Promise<any> {
-        const { userId, roleId, isWin } = gameResultDto;
+        const { userId, roleId, userSession,roomSession,isWin } = gameResultDto;
 
         const user = await this.userRepository.findUser(userId);
         const role = await this.roleRepository.findRole(roleId);
 
-        return this.gameRepository.createResult(user, role, isWin);
+        return this.gameRepository.createResult(user, role, userSession, roomSession,isWin);
     }
 }

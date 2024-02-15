@@ -8,6 +8,12 @@ export class Game extends BaseEntity {
     @PrimaryGeneratedColumn({ name: "result_id" })
     gameId: number;
 
+    @Column({name: 'user_session'})
+    userSession: string
+
+    @Column({name: 'room_session'})
+    roomSession: string
+
     @ManyToOne(type => User, {createForeignKeyConstraints: false, nullable: false})
     @JoinColumn({ name: 'user_id', referencedColumnName: 'userId' }) 
     userId: User;

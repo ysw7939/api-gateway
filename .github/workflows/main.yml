@@ -10,9 +10,6 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.actor }}/api-server
   VERSION: ${{ github.sha }}
   NAME: api-server
-permissions:
-  contents: read
-  packages: write
 jobs:
   # 빌드 Job
   build:
@@ -45,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          push: true
+          push: false
           tags: ${{ env.DOCKER_IMAGE }}:latest
   # 배포 Job
   deploy:

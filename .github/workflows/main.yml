@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          push: false
+          push: true
           tags: ${{ env.DOCKER_IMAGE }}:latest
   # 배포 Job
   deploy:

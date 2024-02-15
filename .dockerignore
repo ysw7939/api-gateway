@@ -1,0 +1,4 @@
+.git
+DockerFile
+node_modules
+dist

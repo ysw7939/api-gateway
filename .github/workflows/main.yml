@@ -78,6 +78,4 @@ jobs:
       - name: Docker run
         run: |
           docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -d -p 8080:3000 --name api-server --network docker-compose_ugizz-network --restart always ${{ env.DOCKER_IMAGE }}:latest \
-          -e RDS_TYPE=${{ env.RDS_TYPE }} -e RDS_RORT=${{ env.RDS_RORT }} -e RDS_PASSWORD=${{ env.RDS_PASSWORD }} -e RDS_HOSTNAME=${{ env.RDS_HOSTNAME }} \
-          -e JWT_SECRET=${{ env.JWT_SECRET }} -e JWT_EXPIRE=${{ env.JWT_EXPIRE }} -e RDS_DB_NAME=${{ env.RDS_DB_NAME }}
+          docker run -d -p 8080:3000 --name api-server --network docker-compose_ugizz-network --restart always ${{ env.DOCKER_IMAGE }}:latest 

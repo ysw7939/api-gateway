@@ -48,3 +48,4 @@ $ docker-compose -f docker-compose-mysql.yml up
 | 📝     | docs     | docs 수정       |
 | 🔀     | merge    | merge           |
 | 🚚     | rename   | 이름 수정, 이동 |
+| 🧪     | test     | 일시적 테스트   |

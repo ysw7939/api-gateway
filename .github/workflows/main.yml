@@ -40,7 +40,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:latest
-          cahe-from: type=gha
+          cache-from: type=gha
           cache-to: type=gha, mode=max
           build-args: |
             RDS_TYPE=${{ secrets.RDS_TYPE }}

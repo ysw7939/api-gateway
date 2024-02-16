@@ -59,7 +59,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       # 3000 -> 80 포트로 수행하도록 지정
-      - name: Docker run
+      - name: Docker rungit 
         run: |
           docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -d -p 3000:3000 --name api-server --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 80:3000 --name api-server --restart always ${{ env.DOCKER_IMAGE }}:latest

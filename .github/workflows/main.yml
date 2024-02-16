@@ -26,9 +26,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      # secrets.RDS_TYPE 출력
-      - name: Print RDS_TYPE
-        run: echo "RDS_TYPE is ${{ secrets.RDS_TYPE }}"
       # github repository에서 checkout
       - uses: actions/checkout@v4
       # docker build 수행
@@ -44,13 +41,13 @@ jobs:
             RDS_DB_NAME=${{ env.RDS_DB_NAME }}
             JWT_SECRET=${{ env.JWT_SECRET }}
             JWT_EXPIRE=${{ env.JWT_EXPIRE }}
-      - name: Cache docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ env.VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+      # - name: Cache docker layers
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-buildx-${{ env.VERSION }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-buildx-
       # GitHub 컨테이너 레지스트리에 로그인 후 빌드 & 푸시
       - name: Login to ghcr
         uses: docker/login-action@v3

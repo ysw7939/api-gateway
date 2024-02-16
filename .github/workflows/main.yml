@@ -10,13 +10,13 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.actor }}/api-server
   VERSION: ${{ github.sha }}
   NAME: api-server
-  RDS_TYPE: ${{ secrets.RDS_TYPE }} 
-  RDS_RORT: ${{ secrets.RDS_RORT }} 
-  RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }} 
-  RDS_HOSTNAME: ${{ secrets.RDS_HOSTNAME }} 
-  RDS_DB_NAME: ${{ secrets.RDS_DB_NAME }} 
-  JWT_SECRET: ${{ secrets.JWT_SECRET }} 
-  JWT_EXPIRE: ${{ secrets.JWT_EXPIRE }} 
+  RDS_TYPE: ${{ secrets.RDS_TYPE }}
+  RDS_RORT: ${{ secrets.RDS_RORT }}
+  RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+  RDS_HOSTNAME: ${{ secrets.RDS_HOSTNAME }}
+  RDS_DB_NAME: ${{ secrets.RDS_DB_NAME }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  JWT_EXPIRE: ${{ secrets.JWT_EXPIRE }}
 jobs:
   # 빌드 Job
   build:
@@ -26,6 +26,9 @@ jobs:
       contents: read
       packages: write
     steps:
+      # secrets.RDS_TYPE 출력
+      - name: Print RDS_TYPE
+        run: echo "RDS_TYPE is ${{ secrets.RDS_TYPE }}"
       # github repository에서 checkout
       - uses: actions/checkout@v2
       # docker build 수행

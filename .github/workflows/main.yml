@@ -11,7 +11,7 @@ env:
   VERSION: ${{ github.sha }}
   NAME: api-server
   RDS_TYPE: ${{ secrets.RDS_TYPE }}
-  RDS_RORT: ${{ secrets.RDS_RORT }}
+  RDS_RORT: 3306
   RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
   RDS_HOSTNAME: ${{ secrets.RDS_HOSTNAME }}
   RDS_DB_NAME: ${{ secrets.RDS_DB_NAME }}
@@ -37,13 +37,13 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           build-args: |
-            RDS_TYPE=${{ secrets.RDS_TYPE }}
-            RDS_RORT=${{ secrets.RDS_RORT }}
-            RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
-            RDS_HOSTNAME=${{ secrets.RDS_HOSTNAME }}
-            RDS_DB_NAME=${{ secrets.RDS_DB_NAME }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_EXPIRE=${{ secrets.JWT_EXPIRE }}
+            RDS_TYPE=${{ env.RDS_TYPE }}
+            RDS_RORT=${{ env.RDS_RORT }}
+            RDS_PASSWORD=${{ env.RDS_PASSWORD }}
+            RDS_HOSTNAME=${{ env.RDS_HOSTNAME }}
+            RDS_DB_NAME=${{ env.RDS_DB_NAME }}
+            JWT_SECRET=${{ env.JWT_SECRET }}
+            JWT_EXPIRE=${{ env.JWT_EXPIRE }}
       - name: Cache docker layers
         uses: actions/cache@v3
         with:

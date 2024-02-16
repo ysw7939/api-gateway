@@ -30,22 +30,22 @@ jobs:
       - name: Print RDS_TYPE
         run: echo "RDS_TYPE is ${{ secrets.RDS_TYPE }}"
       # github repository에서 checkout
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # docker build 수행
       - name: Set up docker buildx
         id: buildx
-        run: |
-          docker build --build-arg RDS_USERNAME=${{ env.RDS_USERNAME }} \
-          --build-arg RDS_TYPE=${{ env.RDS_TYPE }} \
-          --build-arg RDS_RORT=${{ env.RDS_RORT }} \
-          --build-arg RDS_PASSWORD=${{ env.RDS_PASSWORD }} \
-          --build-arg RDS_HOSTNAME=${{ env.RDS_HOSTNAME }} \
-          --build-arg RDS_DB_NAME=${{ env.RDS_DB_NAME }} \
-          --build-arg JWT_SECRET=${{ env.JWT_SECRET }} \
-          --build-arg JWT_EXPIRE=${{ env.JWT_EXPIRE }} \
-          -t ${{ env.DOCKER_IMAGE }}:latest .
+        uses: docker/setup-buildx-action@v3
+        with:
+          build-args: |
+            RDS_TYPE=${{ secrets.RDS_TYPE }}
+            RDS_RORT=${{ secrets.RDS_RORT }}
+            RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
+            RDS_HOSTNAME=${{ secrets.RDS_HOSTNAME }}
+            RDS_DB_NAME=${{ secrets.RDS_DB_NAME }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            JWT_EXPIRE=${{ secrets.JWT_EXPIRE }}
       - name: Cache docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ env.VERSION }}
@@ -53,14 +53,14 @@ jobs:
             ${{ runner.os }}-buildx-
       # GitHub 컨테이너 레지스트리에 로그인 후 빌드 & 푸시
       - name: Login to ghcr
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           builder: ${{ steps.buildx.outputs.name }}
           push: true

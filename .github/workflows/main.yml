@@ -62,24 +62,6 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:latest
-    # 빌드 후 환경변수 확인 Job
-  verify-env:
-    name: Verify Environment Variables
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Pull Docker image
-        run: docker pull ${{ env.DOCKER_IMAGE }}:latest
-
-      - name: Verify Environment Variables in Docker image
-        run: |
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "RDS_TYPE"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "RDS_RORT"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "RDS_PASSWORD"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "RDS_HOSTNAME"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "RDS_DB_NAME"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "JWT_SECRET"
-          docker run --rm ${{ env.DOCKER_IMAGE }}:latest env | grep "JWT_EXPIRE"
   # 배포 Job
   deploy:
     needs: build # build 후에 실행되도록 정의
@@ -97,3 +79,5 @@ jobs:
         run: |
           docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
           docker run -d -p 8080:3000 --name api-server --network docker-compose_ugizz-network --restart always ${{ env.DOCKER_IMAGE }}:latest
+          -e RDS_TYPE=${{ env.RDS_TYPE }} -e RDS_RORT=${{ env.RDS_RORT }} -e RDS_PASSWORD=${{ env.RDS_PASSWORD }} -e RDS_HOSTNAME=${{ env.RDS_HOSTNAME }}
+          -e JWT_SECRET=${{ env.JWT_SECRET }} -e JWT_EXPIRE=${{ env.JWT_EXPIRE }} -e RDS_DB_NAME=${{ env.RDS_DB_NAME }}

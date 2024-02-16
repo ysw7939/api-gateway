@@ -35,10 +35,11 @@ jobs:
         with:
           build-args: |
             RDS_TYPE=${{ secrets.RDS_TYPE }}
-            RDS_RORT="{{ secrets.RDS_RORT }}
+            RDS_RORT=${{ env.RDS_RORT }}
             RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
             RDS_HOSTNAME=${{ secrets.RDS_HOSTNAME }}
             RDS_DB_NAME=${{ secrets.RDS_DB_NAME }}
+            RDS_USERNAME=${{ secrets.RDS_USERNAME }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             JWT_EXPIRE=${{ secrets.JWT_EXPIRE }}
       # - name: Cache docker layers
@@ -64,7 +65,7 @@ jobs:
           tags: ${{ env.DOCKER_IMAGE }}:latest
           build-args: |
             RDS_TYPE=${{ secrets.RDS_TYPE }}
-            RDS_RORT="{{ secrets.RDS_RORT }}
+            RDS_RORT=${{ env.RDS_RORT }}
             RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
             RDS_HOSTNAME=${{ secrets.RDS_HOSTNAME }}
             RDS_DB_NAME=${{ secrets.RDS_DB_NAME }}

@@ -10,6 +10,13 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.actor }}/api-server
   VERSION: ${{ github.sha }}
   NAME: api-server
+  RDS_TYPE: ${{ secrets.RDS_TYPE }} 
+  RDS_RORT: ${{ secrets.RDS_RORT }} 
+  RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }} 
+  RDS_HOSTNAME: ${{ secrets.RDS_HOSTNAME }} 
+  RDS_DB_NAME: ${{ secrets.RDS_DB_NAME }} 
+  JWT_SECRET: ${{ secrets.JWT_SECRET }} 
+  JWT_EXPIRE: ${{ secrets.JWT_EXPIRE }} 
 jobs:
   # 빌드 Job
   build:
@@ -25,14 +32,14 @@ jobs:
       - name: Set up docker buildx
         id: buildx
         run: |
-          docker build --build-arg RDS_USERNAME=${{ secrets.RDS_USERNAME }} \
-          --build-arg RDS_TYPE=${{ secrets.RDS_TYPE }} \
-          --build-arg RDS_RORT=${{ secrets.RDS_RORT }} \
-          --build-arg RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} \
-          --build-arg RDS_HOSTNAME=${{ secrets.RDS_HOSTNAME }} \
-          --build-arg RDS_DB_NAME=${{ secrets.RDS_DB_NAME }} \
-          --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
-          --build-arg JWT_EXPIRE=${{ secrets.JWT_EXPIRE }} \
+          docker build --build-arg RDS_USERNAME=${{ env.RDS_USERNAME }} \
+          --build-arg RDS_TYPE=${{ env.RDS_TYPE }} \
+          --build-arg RDS_RORT=${{ env.RDS_RORT }} \
+          --build-arg RDS_PASSWORD=${{ env.RDS_PASSWORD }} \
+          --build-arg RDS_HOSTNAME=${{ env.RDS_HOSTNAME }} \
+          --build-arg RDS_DB_NAME=${{ env.RDS_DB_NAME }} \
+          --build-arg JWT_SECRET=${{ env.JWT_SECRET }} \
+          --build-arg JWT_EXPIRE=${{ env.JWT_EXPIRE }} \
           -t ${{ env.DOCKER_IMAGE }}:latest .
       - name: Cache docker layers
         uses: actions/cache@v2

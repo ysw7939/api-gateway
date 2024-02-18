@@ -5,8 +5,10 @@ import { FriendRequest } from './friend.request.entity';
 import { FriendComplyDto } from './dto/friend.comply.dto';
 import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags, DocumentBuilder } from '@nestjs/swagger';
 
 @Controller('friend')
+@ApiTags('친구 API')
 @UseGuards(AuthGuard('jwt'))
 export class FriendController {
     constructor(private friendService: FriendService) { }

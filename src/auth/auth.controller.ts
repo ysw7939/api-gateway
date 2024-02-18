@@ -5,9 +5,11 @@ import { AuthLoginDto } from './dto/auth.login.dto';
 import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 
 @Controller('auth')
+@ApiTags('유저 API')
 export class AuthController {
     constructor(private authService: AuthService) { }
 

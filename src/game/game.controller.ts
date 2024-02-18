@@ -4,8 +4,10 @@ import { GameService } from './game.service';
 import { Game } from './game.entity';
 import { GameResultDto } from './dto/game.result.create.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('game')
+@ApiTags('게임 API')
 @UseGuards(AuthGuard())
 export class GameController {
     constructor(private gameService: GameService) { }

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './error/global.exceptrionFilter';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,7 +9,15 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: true
-  })
+  });
+  const config = new DocumentBuilder()
+    .setTitle('ugizz example')
+    .setDescription('The ugizz API description')
+    .setVersion('1.0')
+    .addTag('ugizz')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 }
 bootstrap();

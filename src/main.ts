@@ -15,6 +15,16 @@ async function bootstrap() {
     .setDescription('The ugizz API description')
     .setVersion('1.0')
     .addTag('ugizz')
+        //JWT 토큰 설정
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        name: 'JWT',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

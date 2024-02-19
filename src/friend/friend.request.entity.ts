@@ -20,6 +20,6 @@ export class FriendRequest extends BaseEntity {
     @JoinColumn({ name: 'to_user', referencedColumnName: 'userId' })
     toUser: User;
 
-    @Column({ type: 'tinyint' ,default: false})
+    @Column({ name: 'is_read',type: 'tinyint' ,default: false})
     isRead: boolean;
 }

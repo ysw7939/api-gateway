@@ -5,7 +5,9 @@ import { FriendRequest } from './friend.request.entity';
 import { FriendComplyDto } from './dto/friend.comply.dto';
 import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FriendListDto } from './dto/friend.list.dto';
+import { FriendRequestListDto } from './dto/friend.request.list.dto';
 
 @Controller('friend')
 @ApiBearerAuth('access-token')
@@ -15,6 +17,7 @@ export class FriendController {
     constructor(private friendService: FriendService) { }
     
     @Post('/request')
+    @ApiResponse({})
     request(@Body(ValidationPipe) friendRequestDto: FriendRequestDto): Promise<FriendRequest> {
         return this.friendService.friendRequest(friendRequestDto);
     }
@@ -25,16 +28,28 @@ export class FriendController {
     }
 
     @Get('/friend-list/:id')
+    @ApiResponse({
+        status: 200,
+        type: [FriendListDto]
+    })
     getFriends(@Param('id')  id: number): Promise<Friend[]> {
         return this.friendService.findFriendList(id);
     }
 
     @Get('/requested-list/:id')
+    @ApiResponse({
+        status: 200,
+        type: [FriendRequestListDto]
+    })
     requestFriend(@Param('id')  id: number): Promise<Friend[]> {
         return this.friendService.requestFriendList(id);
     }
 
     @Get('/received-list/:id')
+    @ApiResponse({
+        status: 200,
+        type: [FriendRequestListDto]
+    })
     receviedFriend(@Param('id')  id: number): Promise<Friend[]> {
         return this.friendService.receivedFriendList(id);
     }

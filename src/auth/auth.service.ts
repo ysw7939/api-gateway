@@ -29,9 +29,10 @@ export class AuthService {
         try {
             const user = await this.userRepository.findOne({ where: { address: address } });
             const nickname = user.nickname;
+            const user_id = user.userId;
             const hashedPasswd = await bcrypt.hash(passwd, user.salt);
             if(user &&  user.passwd == hashedPasswd) {
-                const payload = { nickname};
+                const payload = { nickname, user_id};
                 const accessToken = await this.jwtService.sign(payload);
                 return { 'accessToken': accessToken };
             } else {
@@ -47,8 +48,9 @@ export class AuthService {
         try {
             const user = await this.userRepository.findOne({ where: { guestId: guestId } });
             const nickname = user.nickname;
+            const user_id = user.userId;
             if(user && user.guestId === guestId) {
-                const payload = { nickname };
+                const payload = { nickname, user_id };
                 const accessToken = await this.jwtService.sign(payload);
                 return { accessToken };
             }  else {

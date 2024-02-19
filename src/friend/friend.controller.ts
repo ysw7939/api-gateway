@@ -8,6 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FriendListDto } from './dto/friend.list.dto';
 import { FriendRequestListDto } from './dto/friend.request.list.dto';
+import { ResponseEntity } from 'src/configs/res/ResponseEntity';
 
 @Controller('friend')
 @ApiBearerAuth('access-token')
@@ -18,13 +19,14 @@ export class FriendController {
     
     @Post('/request')
     @ApiResponse({})
-    request(@Body(ValidationPipe) friendRequestDto: FriendRequestDto): Promise<FriendRequest> {
-        return this.friendService.friendRequest(friendRequestDto);
+    async request(@Body(ValidationPipe) friendRequestDto: FriendRequestDto): Promise<ResponseEntity<FriendRequest>> {
+        return ResponseEntity.OK_WITH(await this.friendService.friendRequest(friendRequestDto));
     }
 
     @Put('/comply')
-    comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto): Promise<string> {
-        return this.friendService.friendCreate(friendComplyDto);
+    async comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto): Promise<ResponseEntity<string>> {
+        await this.friendService.friendCreate(friendComplyDto);
+        return ResponseEntity.OK();
     }
 
     @Get('/friend-list/:id')
@@ -32,8 +34,8 @@ export class FriendController {
         status: 200,
         type: [FriendListDto]
     })
-    getFriends(@Param('id')  id: number): Promise<Friend[]> {
-        return this.friendService.findFriendList(id);
+    async getFriends(@Param('id')  id: number): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.findFriendList(id));
     }
 
     @Get('/requested-list/:id')
@@ -41,8 +43,8 @@ export class FriendController {
         status: 200,
         type: [FriendRequestListDto]
     })
-    requestFriend(@Param('id')  id: number): Promise<Friend[]> {
-        return this.friendService.requestFriendList(id);
+    async requestFriend(@Param('id')  id: number): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.requestFriendList(id));
     }
 
     @Get('/received-list/:id')
@@ -50,7 +52,7 @@ export class FriendController {
         status: 200,
         type: [FriendRequestListDto]
     })
-    receviedFriend(@Param('id')  id: number): Promise<Friend[]> {
-        return this.friendService.receivedFriendList(id);
+    async receviedFriend(@Param('id')  id: number): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.receivedFriendList(id));
     }
 }

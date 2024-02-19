@@ -36,17 +36,6 @@ export class FriendService {
         await this.friendRequestRepository.update(friendRequestId, { isFriend: true });
         await this.friendRepository.createFriend(friendRequest)
 
-        // await this.friendRequestRepository.createQueryBuilder()
-        //             .select([
-        //                 "friend_request_id",
-        //                 "from_user",
-        //                 "to_user",
-        //                 "is_friend",
-        //                 "created_at",
-        //                 "isRead"
-        //             ])
-        //             .where("friend_request_id = :id", { id: friendRequestId })
-        //             .execute()
         return "친구요청이 수락되었습니다."
     }
 

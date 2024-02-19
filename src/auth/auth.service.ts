@@ -6,6 +6,8 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
+import { AccessTokenDto } from './dto/auth.access.dto';
+import { CheckDto } from './dto/auth.check.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +24,7 @@ export class AuthService {
         return this.userRepository.createGuestUser(authCreateDto);
     }
 
-    async signIn(authLoginDto: AuthLoginDto): Promise<{accessToken: string}> {
+    async signIn(authLoginDto: AuthLoginDto): Promise<AccessTokenDto> {
         const { address, passwd } = authLoginDto;
         try {
             const user = await this.userRepository.findOne({ where: { address: address } });
@@ -31,7 +33,7 @@ export class AuthService {
             if(user &&  user.passwd == hashedPasswd) {
                 const payload = { nickname};
                 const accessToken = await this.jwtService.sign(payload);
-                return { accessToken };
+                return { 'accessToken': accessToken };
             } else {
                 throw new UnauthorizedException('login failed')
             }
@@ -40,7 +42,7 @@ export class AuthService {
         }
     }
 
-    async guestSignIn(authLoginDto: AuthLoginGuestDto): Promise<{ accessToken: string }> {
+    async guestSignIn(authLoginDto: AuthLoginGuestDto): Promise<AccessTokenDto> {
         const { guestId } = authLoginDto;
         try {
             const user = await this.userRepository.findOne({ where: { guestId: guestId } });
@@ -58,11 +60,13 @@ export class AuthService {
      
     }
 
-    async checkAddress(address: string): Promise<boolean> {
-        return this.userRepository.checkUsername(address);
+    async checkAddress(address: string): Promise<CheckDto> {
+        const check = await this.userRepository.checkUsername(address);
+        return {check}
     }
 
-    async checkNickname(nickname: string): Promise<boolean> {
-        return this.userRepository.checkNickname(nickname);
+    async checkNickname(nickname: string): Promise<CheckDto> {
+        const check = await this.userRepository.checkNickname(nickname);
+        return {check}
     }
 }

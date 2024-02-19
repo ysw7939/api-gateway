@@ -33,7 +33,7 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
                 "to_user",
                 "is_friend",
                 "created_at",
-                "isRead"
+                "is_read"
             ])
             .where("friend_request_id = :id", { id: id })
             .execute()
@@ -48,7 +48,7 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
                 "to_user",
                 "is_friend",
                 "created_at",
-                "isRead"
+                "is_read"
             ])
             .where("to_user = :userId", { userId: userId })
             .execute()
@@ -62,7 +62,7 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
                 "to_user",
                 "is_friend",
                 "created_at",
-                "isRead"
+                "is_read"
             ])
             .where("from_user = :userId", { userId: userId })
             .execute()

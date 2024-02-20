@@ -4,7 +4,7 @@ import { GameService } from './game.service';
 import { Game } from './game.entity';
 import { GameResultDto } from './dto/game.result.create.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags,ApiOperation ,ApiBody,ApiResponse} from '@nestjs/swagger';
 import { ResponseEntity } from 'src/configs/res/ResponseEntity';
 
 @Controller('game')
@@ -14,6 +14,14 @@ import { ResponseEntity } from 'src/configs/res/ResponseEntity';
 export class GameController {
     constructor(private gameService: GameService) { }
 
+    @ApiOperation({ summary: "게임 결과 전송" })
+    @ApiBody({
+        type: GameResultDto,
+        description:"게스트 회원가입에 대한 필수 요청 항목"
+    })
+    @ApiResponse({
+        type: ResponseEntity,
+    })
     @Post('/result')
     async create(@Body(ValidationPipe) gameResultDto: GameResultDto): Promise<ResponseEntity<string>> {
         await this.gameService.gameRecord(gameResultDto);

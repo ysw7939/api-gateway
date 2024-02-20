@@ -71,7 +71,7 @@ export class FriendController {
         return ResponseEntity.OK_WITH(await this.friendService.receivedFriendList(user));
     }
 
-    @ApiOperation({ summary: "친구 요청 거절" })
+    @ApiOperation({ summary: "친구 신청 거절" })
     @ApiParam({
         name: 'requestId',
         description: "친구 요청의 고유 번호"

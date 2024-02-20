@@ -5,10 +5,11 @@ import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 
 import { ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { ResponseAccessDto, ResponseCheckDto, ResponseEntity } from 'src/configs/res/ResponseEntity';
+import { ResponseAccessDto, ResponseCheckDto, ResponseEntity, ResponseSearchUserDto } from 'src/configs/res/ResponseEntity';
 import { AccessTokenDto } from './dto/auth.access.dto';
 import { CheckDto } from './dto/auth.check.dto';
 import { AuthCreateDto } from './dto/auth.create.dto';
+import { SearchUserDto } from './dto/auth.search.dto';
 
 @ApiExtraModels(
     AccessTokenDto,
@@ -103,4 +104,17 @@ export class AuthController {
     async checkNickname(@Param('nickname') userName: string): Promise<ResponseEntity<CheckDto>> {
         return ResponseEntity.OK_WITH(await this.authService.checkNickname(userName));
     }
+
+    @ApiOperation({ summary: "닉네임으로 사용자 검색" })
+    @ApiParam({
+        name: 'nickname',
+        description : "검색할 닉네임"
+    })
+    @ApiResponse({
+        type: ResponseSearchUserDto,
+    })
+    @Get('search-nickname/:nickname')
+    async serchNickname(@Param('nickname') userName: string): Promise<ResponseEntity<SearchUserDto>> {
+        return ResponseEntity.OK_WITH(await this.authService.searchNickname(userName));
+    }   
 }

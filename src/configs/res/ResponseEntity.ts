@@ -5,6 +5,7 @@ import { CheckDto } from 'src/auth/dto/auth.check.dto';
 import { FriendRequest } from 'src/friend/friend.request.entity';
 import { FriendListDto } from 'src/friend/dto/friend.list.dto';
 import { FriendRequestListDto } from 'src/friend/dto/friend.request.list.dto';
+import { SearchUserDto } from 'src/auth/dto/auth.search.dto';
 
 export class ResponseEntity<T> {
     @ApiProperty({
@@ -108,3 +109,9 @@ export class ResponseFriendRequestListDtoDto  extends IntersectionType(
     data: FriendRequestListDto[]
 } 
 
+export class ResponseSearchUserDto extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty()
+    data: SearchUserDto
+} 

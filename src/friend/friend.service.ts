@@ -51,4 +51,8 @@ export class FriendService {
     async receivedFriendList(user: User): Promise<Friend[]> {
         return await this.friendRequestRepository.findToUser(user.userId);
     }
+
+    async deleteFriendRequest(requestId: Number): Promise<void> {
+        return await this.friendRequestRepository.deleteRequest(requestId);
+    }
 }

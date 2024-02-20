@@ -66,4 +66,11 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
             .where("from_user = :userId", { userId: userId })
             .execute()
     }
+
+    async deleteRequest(requestId: Number): Promise<void> {
+        await this.createQueryBuilder()
+            .delete()
+            .where("friend_request_id = :requestId", { requestId: requestId })
+            .execute()
+    }
 }

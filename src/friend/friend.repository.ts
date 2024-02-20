@@ -41,4 +41,5 @@ export class FriendRepository extends Repository<Friend> {
 
         return friendList;
     }
+
 }

@@ -1,7 +1,6 @@
 import { Body, Controller, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { GameService } from './game.service';
 
-import { Game } from './game.entity';
 import { GameResultDto } from './dto/game.result.create.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags,ApiOperation ,ApiBody,ApiResponse} from '@nestjs/swagger';

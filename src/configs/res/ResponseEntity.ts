@@ -1,4 +1,4 @@
-import { ApiExtraModels, ApiProperty, IntersectionType, OmitType, getSchemaPath } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, OmitType } from '@nestjs/swagger';
 import { ResponseStatus } from './ResponseStatus';
 import { AccessTokenDto } from 'src/auth/dto/auth.access.dto';
 import { CheckDto } from 'src/auth/dto/auth.check.dto';

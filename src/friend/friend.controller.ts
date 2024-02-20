@@ -6,9 +6,7 @@ import { FriendComplyDto } from './dto/friend.comply.dto';
 import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FriendListDto } from './dto/friend.list.dto';
-import { FriendRequestListDto } from './dto/friend.request.list.dto';
-import { ResponseCheckDto, ResponseEntity, ResponseFriendListDto, ResponseFriendRequestDto, ResponseFriendRequestListDtoDto } from 'src/configs/res/ResponseEntity';
+import { ResponseEntity, ResponseFriendListDto, ResponseFriendRequestDto, ResponseFriendRequestListDtoDto } from 'src/configs/res/ResponseEntity';
 
 @Controller('friend')
 @ApiBearerAuth('access-token')

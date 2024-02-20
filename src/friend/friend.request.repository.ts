@@ -1,5 +1,4 @@
-import { ConflictException, InternalServerErrorException } from "@nestjs/common";
-import { Brackets, DataSource, Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 
 import {FriendRequest } from "./friend.request.entity";

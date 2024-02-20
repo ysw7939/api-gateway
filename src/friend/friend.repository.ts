@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Friend } from "./friend.entity";
-import { DataSource, QueryFailedError, Repository } from "typeorm";
-import { User } from "src/auth/user.entity";
+import { DataSource, Repository } from "typeorm";
 import { FriendRequest } from "./friend.request.entity";
 
 

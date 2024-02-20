@@ -1,5 +1,5 @@
 import { User } from "src/auth/user.entity";
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, JoinColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "./role.entity";
 
 

@@ -6,6 +6,7 @@ import { FriendRequest } from './friend.request.entity';
 import { FriendRepository } from './friend.repository';
 import { FriendComplyDto } from './dto/friend.comply.dto';
 import { Friend } from './friend.entity';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class FriendService {
@@ -15,10 +16,10 @@ export class FriendService {
         private friendRepository: FriendRepository
     ) { }
 
-    async friendRequest(friendRequestDto: FriendRequestDto): Promise<FriendRequest>{
-        const { fromUser, toUser } = friendRequestDto;
+    async friendRequest(friendRequestDto: FriendRequestDto, user:User): Promise<FriendRequest>{
+        const { toUser } = friendRequestDto;
 
-        const user1 = await this.userRepository.findUser(fromUser)
+        const user1 = user;
         const user2 = await this.userRepository.findUser(toUser)
 
 
@@ -39,15 +40,15 @@ export class FriendService {
         return "친구요청이 수락되었습니다."
     }
 
-    async findFriendList(userId: number): Promise<Friend[]> {
-        return await this.friendRepository.userFriend(userId);
+    async findFriendList(user: User): Promise<Friend[]> {
+        return await this.friendRepository.userFriend(user.userId);
     }
 
-    async requestFriendList(userId: number): Promise<Friend[]> {
-        return await this.friendRequestRepository.findToUser(userId);
+    async requestFriendList(user: User): Promise<Friend[]> {
+        return await this.friendRequestRepository.findFromUser(user.userId);
     }
 
-    async receivedFriendList(userId: number): Promise<Friend[]> {
-        return await this.friendRequestRepository.findFromUser(userId);
+    async receivedFriendList(user: User): Promise<Friend[]> {
+        return await this.friendRequestRepository.findToUser(user.userId);
     }
 }

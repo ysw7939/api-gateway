@@ -5,6 +5,8 @@ import { GameResultDto } from './dto/game.result.create.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags,ApiOperation ,ApiBody,ApiResponse} from '@nestjs/swagger';
 import { ResponseEntity } from 'src/configs/res/ResponseEntity';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 
 @Controller('game')
 @ApiBearerAuth('access-token')
@@ -22,8 +24,8 @@ export class GameController {
         type: ResponseEntity,
     })
     @Post('/result')
-    async create(@Body(ValidationPipe) gameResultDto: GameResultDto): Promise<ResponseEntity<string>> {
-        await this.gameService.gameRecord(gameResultDto);
+    async create(@Body(ValidationPipe) gameResultDto: GameResultDto, @GetUser() user: User): Promise<ResponseEntity<string>> {
+        await this.gameService.gameRecord(gameResultDto, user);
         return ResponseEntity.OK();
     }
 }

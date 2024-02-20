@@ -7,6 +7,8 @@ import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseEntity, ResponseFriendListDto, ResponseFriendRequestDto, ResponseFriendRequestListDtoDto } from 'src/configs/res/ResponseEntity';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 
 @Controller('friend')
 @ApiBearerAuth('access-token')
@@ -24,8 +26,8 @@ export class FriendController {
         type: ResponseFriendRequestDto
     })
     @Post('/request')
-    async request(@Body(ValidationPipe) friendRequestDto: FriendRequestDto): Promise<ResponseEntity<FriendRequest>> {
-        return ResponseEntity.OK_WITH(await this.friendService.friendRequest(friendRequestDto));
+    async request(@Body(ValidationPipe) friendRequestDto: FriendRequestDto, @GetUser() user: User): Promise<ResponseEntity<FriendRequest>> {
+        return ResponseEntity.OK_WITH(await this.friendService.friendRequest(friendRequestDto, user));
     }
 
     @ApiOperation({ summary: "친구 신청 수락" })
@@ -37,47 +39,35 @@ export class FriendController {
         type: ResponseEntity
     })
     @Put('/comply')
-    async comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto): Promise<ResponseEntity<string>> {
+    async comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto,): Promise<ResponseEntity<string>> {
         await this.friendService.friendCreate(friendComplyDto);
         return ResponseEntity.OK();
     }
 
     @ApiOperation({ summary: "사용자의 친구 목록을 조회" })
-    @ApiParam({
-        name: 'userId',
-        description : "조회할 사용자의 고유 번호"
-    })
     @ApiResponse({
         type: ResponseFriendListDto,
     })
-    @Get('/friend-list/:userId')
-    async getFriends(@Param('userId')  id: number): Promise<ResponseEntity<Friend[]>> {
-        return ResponseEntity.OK_WITH(await this.friendService.findFriendList(id));
+    @Get('/friend-list')
+    async getFriends(@GetUser() user: User): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.findFriendList(user));
     }
     
     @ApiOperation({ summary: "사용자의 친구 신청 내역 조회" })
-    @ApiParam({
-        name: 'userId',
-        description : "조회할 사용자의 고유 번호"
-    })
     @ApiResponse({
         type: ResponseFriendRequestListDtoDto,
     })
-    @Get('/requested-list/:userId')
-    async requestFriend(@Param('userId')  id: number): Promise<ResponseEntity<Friend[]>> {
-        return ResponseEntity.OK_WITH(await this.friendService.requestFriendList(id));
+    @Get('/requested-list')
+    async requestFriend(@GetUser() user: User): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.requestFriendList(user));
     }
 
     @ApiOperation({ summary: "사용자의 친구 요청 받은 내역 조회" })
-    @ApiParam({
-        name: 'userId',
-        description : "조회할 사용자의 고유 번호"
-    })
     @ApiResponse({
         type: ResponseFriendRequestListDtoDto,
     })
-    @Get('/received-list/:userId')
-    async receviedFriend(@Param('userId')  id: number): Promise<ResponseEntity<Friend[]>> {
-        return ResponseEntity.OK_WITH(await this.friendService.receivedFriendList(id));
+    @Get('/received-list')
+    async receviedFriend(@GetUser() user: User): Promise<ResponseEntity<Friend[]>> {
+        return ResponseEntity.OK_WITH(await this.friendService.receivedFriendList(user));
     }
 }

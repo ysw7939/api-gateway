@@ -4,14 +4,6 @@ import { IsBoolean, IsNumber} from "class-validator";
 export class GameResultDto {
     @IsNumber()
     @ApiProperty({
-        description: '사용자의 고유 번호',
-        example: 1,
-        type: Number,
-    })
-    userId: number;
-
-    @IsNumber()
-    @ApiProperty({
         description: '게임내 플레이어 역할 고유 번호',
         example: 1,
         type: Number,

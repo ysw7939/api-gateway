@@ -3,8 +3,8 @@ import { DataSource, Repository } from "typeorm";
 import { User } from "./user.entity";
 import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
-import { AuthCreateDto } from "./dto/auth.create.dto";
 import { AuthCreateGuestDto } from "./dto/auth.guest.create.dto";
+import { AuthCreateDto } from "./dto/auth.create.dto";
 
 
 @Injectable()
@@ -27,8 +27,8 @@ export class UserRepository extends Repository<User> {
     }
 
 
-    async createGuestUser(authCreateDto: AuthCreateGuestDto): Promise<any> {
-        const { guestId, nickname } = authCreateDto;
+    async createGuestUser(authCreateGuestDto: AuthCreateGuestDto): Promise<any> {
+        const { guestId, nickname } = authCreateGuestDto;
 
         const user = this.create({ guestId, nickname });
        

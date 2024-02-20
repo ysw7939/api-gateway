@@ -1,13 +1,24 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { ApiExtraModels, ApiProperty, IntersectionType, OmitType, getSchemaPath } from '@nestjs/swagger';
 import { ResponseStatus } from './ResponseStatus';
+import { AccessTokenDto } from 'src/auth/dto/auth.access.dto';
+import { CheckDto } from 'src/auth/dto/auth.check.dto';
 
 export class ResponseEntity<T> {
-  @Exclude() private readonly statusCode: number;
-  @Exclude() private readonly message: string;
-  @Exclude() private readonly data: T;
+    @ApiProperty({
+        description: "상태 코드"
+    })
+    private readonly statusCode: number;
+    @ApiProperty({
+        description: "메세지",
+        example:"message"
+    })
+    private readonly message: string;
+    @ApiProperty({
+        description: "응답 데이터"
+    })
+    data: T;
 
-  private constructor(status: ResponseStatus, message: string, data: T) {
+  public constructor(status: ResponseStatus, message: string, data: T) {
     this.statusCode = status;
     this.message = message;
     this.data = data;
@@ -46,5 +57,30 @@ export class ResponseEntity<T> {
   ): ResponseEntity<T> {
     return new ResponseEntity<T>(code, message, data);
   }
-
+    
 }
+
+
+
+export class SwaggerResponse extends OmitType(ResponseEntity, ['data'] as const) { }
+
+export class CheckAddDto extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty()
+    data: CheckDto
+} 
+
+export class AccessAddDto extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty()
+    data: AccessTokenDto
+} 
+
+export class SuccessAddDto extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty()
+    data: AccessTokenDto
+} 

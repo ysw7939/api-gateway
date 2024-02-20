@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from './user.respository';
-import { AuthCreateDto } from './dto/auth.create.dto';
 import { AuthLoginDto } from './dto/auth.login.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -8,6 +7,7 @@ import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 import { AccessTokenDto } from './dto/auth.access.dto';
 import { CheckDto } from './dto/auth.check.dto';
+import { AuthCreateDto } from './dto/auth.create.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +17,11 @@ export class AuthService {
     ) { }
 
     async signUp(authCreateDto: AuthCreateDto): Promise<void> {
-        return this.userRepository.createUser(authCreateDto);
+        return await this.userRepository.createUser(authCreateDto);
     }
 
-    async guestSignUp(authCreateDto: AuthCreateGuestDto): Promise<void> {
-        return this.userRepository.createGuestUser(authCreateDto);
+    async guestSignUp(authCreateGuestDto: AuthCreateGuestDto): Promise<void> {
+        return await this.userRepository.createGuestUser(authCreateGuestDto);
     }
 
     async signIn(authLoginDto: AuthLoginDto): Promise<AccessTokenDto> {

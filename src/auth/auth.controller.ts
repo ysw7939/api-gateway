@@ -5,7 +5,7 @@ import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 
 import { ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { AccessAddDto, CheckAddDto, ResponseEntity } from 'src/configs/res/ResponseEntity';
+import { ResponseAccessDto, ResponseCheckDto, ResponseEntity } from 'src/configs/res/ResponseEntity';
 import { AccessTokenDto } from './dto/auth.access.dto';
 import { CheckDto } from './dto/auth.check.dto';
 import { AuthCreateDto } from './dto/auth.create.dto';
@@ -42,7 +42,7 @@ export class AuthController {
         description:"로그인에 대한 필수 요청 항목"
     })
     @ApiResponse({
-        type: AccessAddDto
+        type: ResponseAccessDto
     })
     @HttpCode(200)
     async signIn(@Body(ValidationPipe) authLoginDto: AuthLoginDto): Promise<ResponseEntity<AccessTokenDto>> {
@@ -70,7 +70,7 @@ export class AuthController {
         description:"게스트 로그인에 대한 필수 요청 항목"
     })
     @ApiResponse({
-        type: AccessAddDto
+        type: ResponseAccessDto
     })
     @Post('guest/signin')
     async guestSignIn(@Body(ValidationPipe) authLoginDto: AuthLoginGuestDto): Promise<ResponseEntity<AccessTokenDto>> {
@@ -84,7 +84,7 @@ export class AuthController {
         description : "중복 확인할 아이디"
     })
     @ApiResponse({
-        type: CheckAddDto,
+        type: ResponseCheckDto,
     })
     @Get('check-username/:userName')
     async checkUsername(@Param('userName') userName: string): Promise<ResponseEntity<CheckDto>> {
@@ -97,7 +97,7 @@ export class AuthController {
         description : "중복 확인할 닉네임"
     })
     @ApiResponse({
-        type: CheckAddDto,
+        type: ResponseCheckDto,
     })
     @Get('check-nickname/:nickname')
     async checkNickname(@Param('nickname') userName: string): Promise<ResponseEntity<CheckDto>> {

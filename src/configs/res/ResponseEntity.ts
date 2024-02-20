@@ -2,6 +2,9 @@ import { ApiExtraModels, ApiProperty, IntersectionType, OmitType, getSchemaPath 
 import { ResponseStatus } from './ResponseStatus';
 import { AccessTokenDto } from 'src/auth/dto/auth.access.dto';
 import { CheckDto } from 'src/auth/dto/auth.check.dto';
+import { FriendRequest } from 'src/friend/friend.request.entity';
+import { FriendListDto } from 'src/friend/dto/friend.list.dto';
+import { FriendRequestListDto } from 'src/friend/dto/friend.request.list.dto';
 
 export class ResponseEntity<T> {
     @ApiProperty({
@@ -64,23 +67,44 @@ export class ResponseEntity<T> {
 
 export class SwaggerResponse extends OmitType(ResponseEntity, ['data'] as const) { }
 
-export class CheckAddDto extends IntersectionType(
+export class ResponseCheckDto extends IntersectionType(
     SwaggerResponse
 ) {
     @ApiProperty()
     data: CheckDto
 } 
 
-export class AccessAddDto extends IntersectionType(
+export class ResponseAccessDto extends IntersectionType(
     SwaggerResponse
 ) {
     @ApiProperty()
     data: AccessTokenDto
 } 
 
-export class SuccessAddDto extends IntersectionType(
+export class ResponseFriendRequestDto  extends IntersectionType(
     SwaggerResponse
 ) {
-    @ApiProperty()
-    data: AccessTokenDto
+    @ApiProperty({
+        type: [FriendRequest]
+    })
+    data: FriendRequest[]
 } 
+
+export class ResponseFriendListDto  extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty({
+        type: [FriendListDto]
+    })
+    data: FriendListDto[]
+} 
+
+export class ResponseFriendRequestListDtoDto  extends IntersectionType(
+    SwaggerResponse
+) {
+    @ApiProperty({
+        type: [FriendRequestListDto]
+    })
+    data: FriendRequestListDto[]
+} 
+

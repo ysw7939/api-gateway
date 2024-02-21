@@ -99,7 +99,7 @@ export class AuthController {
     @ApiResponse({
         type: ResponseCheckDto,
     })
-    @Get('check-username/:userId')
+    @Get('check-userId/:userId')
     async checkUsername(@Param(ValidationPipe) param: userIdParams): Promise<ResponseEntity<CheckDto>> {
         return ResponseEntity.OK_WITH(await this.authService.checkAddress(param.userId));
     }

@@ -25,9 +25,9 @@ export class AuthService {
     }
 
     async signIn(authLoginDto: AuthLoginDto): Promise<AccessTokenDto> {
-        const { address, passwd } = authLoginDto;
+        const { id, passwd } = authLoginDto;
         try {
-            const user = await this.userRepository.findOne({ where: { address: address } });
+            const user = await this.userRepository.findOne({ where: { address: id } });
             const userId = user.userId;
             const hashedPasswd = await bcrypt.hash(passwd, user.salt);
             if(user &&  user.passwd == hashedPasswd) {

@@ -10,7 +10,7 @@ export class AuthLoginDto {
         example:'suwon123',
         type: String,
     })
-    address: string;
+    id: string;
 
     @IsString()
     @MinLength(4)

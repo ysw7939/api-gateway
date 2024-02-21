@@ -6,7 +6,6 @@ export class AuthCreateGuestDto {
     @MinLength(4)
     @MaxLength(200) 
     @IsNotEmpty()
-    @Matches(/^[a-zA-Z0-9]*$/, )
     @ApiProperty({
         description: '접속한 디바이스의 고유한 시리얼 넘버',
         example:'디바이스 id',

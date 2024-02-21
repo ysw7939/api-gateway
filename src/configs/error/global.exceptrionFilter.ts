@@ -1,7 +1,6 @@
 import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus, Logger, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { QueryFailedError, EntityNotFoundError, CannotCreateEntityIdMapError } from 'typeorm';
-import { GlobalResponseError } from 'src/error/global.response.error';
 import { ResponseEntity } from 'src/configs/res/ResponseEntity';
 
 @Catch()

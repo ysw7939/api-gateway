@@ -38,7 +38,7 @@ export class FriendController {
     @ApiResponse({
         type: ResponseEntity
     })
-    @Put('/comply')
+    @Post('/comply')
     async comply(@Body(ValidationPipe) friendComplyDto: FriendComplyDto,): Promise<ResponseEntity<string>> {
         await this.friendService.friendCreate(friendComplyDto);
         return ResponseEntity.OK();

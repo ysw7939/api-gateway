@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber } from "class-validator";
+import { IsString } from "class-validator";
 
 export class FriendRequestDto {
     @ApiProperty({
-        description: '친구 신청을 받는 사용자의 고유 번호',
-        example: 2,
-        type: Number,
+        description: '친구 신청을 받는 사용자의 닉네임',
+        example: 'nickname',
+        type: String,
     })
-    @IsNumber()
-    toUser: number;
+    @IsString()
+    nickname: string;
 } 

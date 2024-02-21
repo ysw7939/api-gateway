@@ -16,7 +16,6 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
     }
 
     async createFriend(fromUser: User, toUser: User): Promise<any> {
-        const friend = this.create({ fromUser, toUser })
         const resultId = await this.createQueryBuilder()
             .insert()
             .values({

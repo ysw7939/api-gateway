@@ -17,11 +17,10 @@ export class FriendService {
     ) { }
 
     async friendRequest(friendRequestDto: FriendRequestDto, user:User): Promise<FriendRequest>{
-        const { toUser } = friendRequestDto;
-
+        const { nickname } = friendRequestDto;
+        
         const user1 = user;
-        const user2 = await this.userRepository.findUser(toUser)
-
+        const user2 = await this.userRepository.findOne({where: {nickname: nickname}});
 
         return this.friendRequestRepository.createFriend(user1,user2);
     }

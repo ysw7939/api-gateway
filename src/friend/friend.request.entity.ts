@@ -52,4 +52,7 @@ export class FriendRequest extends BaseEntity {
     })
     @Column({ name: 'is_read',type: 'tinyint' ,default: false})
     isRead: boolean;
+
+    @Column({name: 'delete_at', type: 'timestamp', nullable: true})
+    deleteAt: Date;
 }

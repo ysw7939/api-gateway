@@ -69,7 +69,8 @@ export class FriendRequestRepository extends Repository<FriendRequest>{
 
     async deleteRequest(requestId: Number): Promise<void> {
         await this.createQueryBuilder()
-            .delete()
+            .update()
+            .set({ deleteAt: () => 'CURRENT_TIMESTAMP'})
             .where("friend_request_id = :requestId", { requestId: requestId })
             .execute()
     }

@@ -1,4 +1,4 @@
-import { Controller, ValidationPipe,Post,Body, Param,Get, Put, ParseIntPipe, UseGuards, Delete } from '@nestjs/common';
+import { Controller, ValidationPipe,Post,Body, Param,Get, Put, ParseIntPipe, UseGuards, Delete, Patch } from '@nestjs/common';
 import { FriendService } from './friend.service';
 import { FriendRequestDto } from './dto/friend.request.dto';
 import { FriendRequest } from './friend.request.entity';
@@ -79,7 +79,7 @@ export class FriendController {
     @ApiResponse({
         type: ResponseEntity,
     })
-    @Delete('/requested/:requestId')
+    @Patch('/requested/:requestId')
     async delete(@Param('requestId') friendRequestId: number): Promise<ResponseEntity<string>> {
         await this.friendService.deleteFriendRequest(friendRequestId);
         return ResponseEntity.OK();

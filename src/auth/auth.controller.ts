@@ -20,7 +20,7 @@ class NicknameParams {
 class userIdParams {
   @IsString()
   @Matches(/^[a-zA-Z0-9]*$/)
-  userId: string;
+  id: string;
 }
 
 @ApiExtraModels(
@@ -28,7 +28,7 @@ class userIdParams {
     CheckDto,
     ResponseEntity
 )
-@Controller('auth')
+@Controller('user')
 @ApiTags('유저 API')
 export class AuthController {
     constructor(private authService: AuthService) { }
@@ -62,7 +62,7 @@ export class AuthController {
         return ResponseEntity.OK_WITH( await this.authService.signIn(authLoginDto));
     }
 
-    @Post('/guest/signup')
+    @Post('signup/guest')
     @ApiOperation({ summary: "게스트 사용자 회원가입" })
     @ApiBody({
         type: AuthCreateGuestDto,
@@ -85,7 +85,7 @@ export class AuthController {
     @ApiResponse({
         type: ResponseAccessDto
     })
-    @Post('guest/signin')
+    @Post('signin/guest')
     async guestSignIn(@Body(ValidationPipe) authLoginDto: AuthLoginGuestDto): Promise<ResponseEntity<AccessTokenDto>> {
         return ResponseEntity.OK_WITH(await this.authService.guestSignIn(authLoginDto));
     }
@@ -93,15 +93,15 @@ export class AuthController {
 
     @ApiOperation({ summary: "아이디 중복확인" })
     @ApiParam({
-        name: 'userId',
+        name: 'id',
         description : "중복 확인할 아이디"
     })
     @ApiResponse({
         type: ResponseCheckDto,
     })
-    @Get('check-userId/:userId')
+    @Get('userid/:id/duplicate')
     async checkUsername(@Param(ValidationPipe) param: userIdParams): Promise<ResponseEntity<CheckDto>> {
-        return ResponseEntity.OK_WITH(await this.authService.checkAddress(param.userId));
+        return ResponseEntity.OK_WITH(await this.authService.checkAddress(param.id));
     }
 
     @ApiOperation({ summary: "닉네임 중복확인" })
@@ -113,7 +113,7 @@ export class AuthController {
         type: ResponseCheckDto,
     })
         
-    @Get('check-nickname/:nickname')
+    @Get('nickname/:nickname/duplicate')
     async checkNickname(@Param(ValidationPipe) param: NicknameParams): Promise<ResponseEntity<CheckDto>> {
         return ResponseEntity.OK_WITH(await this.authService.checkNickname(param.nickname));
     }

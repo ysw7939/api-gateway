@@ -4,17 +4,20 @@ import { IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class AuthCreateDto {
     @ApiProperty({
-        description: '로그인의 필요한 사용자 아이디',
+        description: '로그인의 필요한 사용자 아이디 (a-zA-Z0-9)만 가능 최소 4자리 - 최대 50자리',
         example:'suwon123',
         type: String,
     })
     @IsString()
     @MinLength(4)
     @MaxLength(50)
-    address: string;
+    @Matches(/^[a-zA-Z0-9]*$/, {
+        message: '영어와 숫자만 입력 가능합니다.'
+    })
+    id: string;
 
     @ApiProperty({
-        description: '로그인의 필요한 사용자 비밀번호',
+        description: '로그인의 필요한 사용자 비밀번호 (a-zA-Z0-9)만 가능',
         example:'passwd123',
         type: String
     })

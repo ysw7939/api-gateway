@@ -81,15 +81,15 @@ export class AuthController {
 
     @ApiOperation({ summary: "아이디 중복확인" })
     @ApiParam({
-        name: 'userName',
+        name: 'userId',
         description : "중복 확인할 아이디"
     })
     @ApiResponse({
         type: ResponseCheckDto,
     })
-    @Get('check-username/:userName')
-    async checkUsername(@Param('userName') userName: string): Promise<ResponseEntity<CheckDto>> {
-        return ResponseEntity.OK_WITH(await this.authService.checkAddress(userName));
+    @Get('check-username/:userId')
+    async checkUsername(@Param('userId') userId: string): Promise<ResponseEntity<CheckDto>> {
+        return ResponseEntity.OK_WITH(await this.authService.checkAddress(userId));
     }
 
     @ApiOperation({ summary: "닉네임 중복확인" })

@@ -8,7 +8,6 @@ import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 import { AccessTokenDto } from './dto/auth.access.dto';
 import { CheckDto } from './dto/auth.check.dto';
 import { AuthCreateDto } from './dto/auth.create.dto';
-import { SearchUserDto } from './dto/auth.search.dto';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +70,4 @@ export class AuthService {
         return {check}
     }
 
-    async searchNickname(nickname: string): Promise<SearchUserDto> {
-        return await this.userRepository.searchNickname(nickname)
-    }
 }

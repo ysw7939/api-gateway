@@ -1,15 +1,27 @@
-import { Body, Controller, Param, Post, Get, ValidationPipe, HttpCode } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get, ValidationPipe, HttpCode, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth.login.dto';
 import { AuthLoginGuestDto } from './dto/auth.guest.login.dto';
 import { AuthCreateGuestDto } from './dto/auth.guest.create.dto';
 
 import { ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { ResponseAccessDto, ResponseCheckDto, ResponseEntity, ResponseSearchUserDto } from 'src/configs/res/ResponseEntity';
+import { ResponseAccessDto, ResponseCheckDto, ResponseEntity } from 'src/configs/res/ResponseEntity';
 import { AccessTokenDto } from './dto/auth.access.dto';
 import { CheckDto } from './dto/auth.check.dto';
 import { AuthCreateDto } from './dto/auth.create.dto';
-import { SearchUserDto } from './dto/auth.search.dto';
+import { IsString, Matches } from 'class-validator';
+
+class NicknameParams {
+  @IsString()
+  @Matches(/^[a-zA-Z0-9가-힣]*$/)
+  nickname: string;
+}
+
+class userIdParams {
+  @IsString()
+  @Matches(/^[a-zA-Z0-9]*$/)
+  userId: string;
+}
 
 @ApiExtraModels(
     AccessTokenDto,
@@ -88,8 +100,8 @@ export class AuthController {
         type: ResponseCheckDto,
     })
     @Get('check-username/:userId')
-    async checkUsername(@Param('userId') userId: string): Promise<ResponseEntity<CheckDto>> {
-        return ResponseEntity.OK_WITH(await this.authService.checkAddress(userId));
+    async checkUsername(@Param(ValidationPipe) param: userIdParams): Promise<ResponseEntity<CheckDto>> {
+        return ResponseEntity.OK_WITH(await this.authService.checkAddress(param.userId));
     }
 
     @ApiOperation({ summary: "닉네임 중복확인" })
@@ -100,21 +112,10 @@ export class AuthController {
     @ApiResponse({
         type: ResponseCheckDto,
     })
+        
     @Get('check-nickname/:nickname')
-    async checkNickname(@Param('nickname') userName: string): Promise<ResponseEntity<CheckDto>> {
-        return ResponseEntity.OK_WITH(await this.authService.checkNickname(userName));
+    async checkNickname(@Param(ValidationPipe) param: NicknameParams): Promise<ResponseEntity<CheckDto>> {
+        return ResponseEntity.OK_WITH(await this.authService.checkNickname(param.nickname));
     }
 
-    @ApiOperation({ summary: "닉네임으로 사용자 검색" })
-    @ApiParam({
-        name: 'nickname',
-        description : "검색할 닉네임"
-    })
-    @ApiResponse({
-        type: ResponseSearchUserDto,
-    })
-    @Get('search-nickname/:nickname')
-    async serchNickname(@Param('nickname') userName: string): Promise<ResponseEntity<SearchUserDto>> {
-        return ResponseEntity.OK_WITH(await this.authService.searchNickname(userName));
-    }   
 }

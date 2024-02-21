@@ -1,7 +1,8 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger, UnauthorizedException } from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus, Logger, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { QueryFailedError, EntityNotFoundError, CannotCreateEntityIdMapError } from 'typeorm';
 import { GlobalResponseError } from 'src/error/global.response.error';
+import { ResponseEntity } from 'src/configs/res/ResponseEntity';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -17,6 +18,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         let status = HttpStatus.INTERNAL_SERVER_ERROR;
         
         switch (exception.constructor) {
+            case BadRequestException:
+                status = (exception as BadRequestException).getStatus(); 
+                message = (exception as BadRequestException).message;
             case HttpException:
                 status = (exception as HttpException).getStatus();
                 break;
@@ -43,7 +47,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             default:
                 status = HttpStatus.INTERNAL_SERVER_ERROR
         }
-        response.status(status).json(GlobalResponseError(status, message, code, request));
+        response.status(status).json(ResponseEntity.ERROR_WITH(status, message));
+
     }
 }
 

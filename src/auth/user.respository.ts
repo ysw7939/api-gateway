@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcryptjs';
 import { AuthCreateGuestDto } from "./dto/auth.guest.create.dto";
 import { AuthCreateDto } from "./dto/auth.create.dto";
-import { SearchUserDto } from "./dto/auth.search.dto";
+
 
 
 @Injectable()
@@ -56,13 +56,4 @@ export class UserRepository extends Repository<User> {
         }
     }
 
-    async searchNickname(nickname: string): Promise<SearchUserDto> {
-        return await this.createQueryBuilder()
-            .select([
-                "user_id",
-                "nickname"
-            ])
-            .where("nickname = :nickname", { nickname: nickname })
-            .execute()
-    }
 }

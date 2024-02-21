@@ -17,7 +17,7 @@ export class AuthLoginDto {
     @MaxLength(20)
     //영어랑 숫자만 가능한 유효성 체크
     @Matches(/^[a-zA-Z0-9]*$/, {
-        message: 'password only accepts english and number'
+        message: '영문 숫자만 가능합니다.'
     })
     @ApiProperty({
         description: '사용자 로그인 비밀번호',

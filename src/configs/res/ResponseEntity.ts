@@ -5,7 +5,8 @@ import { CheckDto } from 'src/auth/dto/auth.check.dto';
 import { FriendRequest } from 'src/friend/friend.request.entity';
 import { FriendListDto } from 'src/friend/dto/friend.list.dto';
 import { FriendRequestListDto } from 'src/friend/dto/friend.request.list.dto';
-import { SearchUserDto } from 'src/auth/dto/auth.search.dto';
+import { HttpStatus } from '@nestjs/common';
+
 
 export class ResponseEntity<T> {
     @ApiProperty({
@@ -22,11 +23,12 @@ export class ResponseEntity<T> {
     })
     data: T;
 
-  public constructor(status: ResponseStatus, message: string, data: T) {
+  public constructor(status: number, message: string, data: T) {
     this.statusCode = status;
     this.message = message;
     this.data = data;
   }
+
 
   static OK(): ResponseEntity<string> {
     return new ResponseEntity<string>(ResponseStatus.OK, 'success', '');
@@ -48,10 +50,10 @@ export class ResponseEntity<T> {
   }
 
   static ERROR_WITH(
+    status : HttpStatus,
     message: string,
-    code: ResponseStatus = ResponseStatus.SERVER_ERROR,
   ): ResponseEntity<string> {
-    return new ResponseEntity<string>(code, message, '');
+    return new ResponseEntity<string>(status, message, '');
   }
 
   static ERROR_WITH_DATA<T>(
@@ -109,9 +111,3 @@ export class ResponseFriendRequestListDtoDto  extends IntersectionType(
     data: FriendRequestListDto[]
 } 
 
-export class ResponseSearchUserDto extends IntersectionType(
-    SwaggerResponse
-) {
-    @ApiProperty()
-    data: SearchUserDto
-} 

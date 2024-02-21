@@ -47,8 +47,9 @@ export class AuthCreateDto {
     @IsString()
     @MinLength(4)
     @MaxLength(50)
+    @Matches(/^[a-zA-Z0-9가-힣]*$/, { message: '영어 숫자 한글만 가능합니다' })
     @ApiProperty({
-        description: '사용자의 닉네임',
+        description: '사용자의 닉네임  (a-zA-Z0-9가-힣)만 가능',
         example:'myNickname',
         type: String
     })

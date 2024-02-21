@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendRequestRepository } from './friend.request.repository';
 import { UserRepository } from 'src/auth/user.respository';
 import { FriendRequestDto } from './dto/friend.request.dto';
@@ -18,6 +18,10 @@ export class FriendService {
 
     async friendRequest(friendRequestDto: FriendRequestDto, user:User): Promise<FriendRequest>{
         const { nickname } = friendRequestDto;
+
+        if (await this.userRepository.checkNickname(nickname)) {
+            throw new BadRequestException("해당 닉네임을 가진 유저가 없습니다.")
+        };
         
         const user1 = user;
         const user2 = await this.userRepository.findOne({where: {nickname: nickname}});

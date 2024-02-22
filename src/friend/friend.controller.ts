@@ -18,37 +18,18 @@ import { FriendComplyDto } from './dto/friend.comply.dto';
 import { Friend } from './friend.entity';
 import { AuthGuard } from '@nestjs/passport';
 import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
   ResponseEntity,
-  ResponseFriendListDto,
-  ResponseFriendRequestDto,
-  ResponseFriendRequestListDtoDto,
+
 } from 'src/configs/res/ResponseEntity';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
-@Controller('friend')
-@ApiBearerAuth('access-token')
-@ApiTags('친구 API')
+
 @UseGuards(AuthGuard('jwt'))
+@Controller('friend')
 export class FriendController {
   constructor(private friendService: FriendService) {}
 
-  @ApiOperation({ summary: '친구 신청' })
-  @ApiBody({
-    type: FriendRequestDto,
-    description: '친구 신청에 대한 필수 요청 항목',
-  })
-  @ApiResponse({
-    type: ResponseFriendRequestDto,
-  })
   @Post('/request')
   async request(
     @Body(ValidationPipe) friendRequestDto: FriendRequestDto,
@@ -60,14 +41,6 @@ export class FriendController {
     );
   }
 
-  @ApiOperation({ summary: '친구 신청 수락' })
-  @ApiBody({
-    type: FriendComplyDto,
-    description: '친구 신청 수락에 필요한 필수 요청 항목',
-  })
-  @ApiResponse({
-    type: ResponseEntity,
-  })
   @Post('/comply')
   async comply(
     @Body(ValidationPipe) friendComplyDto: FriendComplyDto,
@@ -76,10 +49,6 @@ export class FriendController {
     return ResponseEntity.OK();
   }
 
-  @ApiOperation({ summary: '사용자의 친구 목록을 조회' })
-  @ApiResponse({
-    type: ResponseFriendListDto,
-  })
   @Get('/friend-list')
   async getFriends(@GetUser() user: User): Promise<ResponseEntity<Friend[]>> {
     return ResponseEntity.OK_WITH(
@@ -87,10 +56,6 @@ export class FriendController {
     );
   }
 
-  @ApiOperation({ summary: '사용자의 친구 신청 내역 조회' })
-  @ApiResponse({
-    type: ResponseFriendRequestListDtoDto,
-  })
   @Get('/requested-list')
   async requestFriend(
     @GetUser() user: User,
@@ -100,10 +65,6 @@ export class FriendController {
     );
   }
 
-  @ApiOperation({ summary: '사용자의 친구 요청 받은 내역 조회' })
-  @ApiResponse({
-    type: ResponseFriendRequestListDtoDto,
-  })
   @Get('/received-list')
   async receviedFriend(
     @GetUser() user: User,
@@ -113,14 +74,6 @@ export class FriendController {
     );
   }
 
-  @ApiOperation({ summary: '친구 신청 거절' })
-  @ApiParam({
-    name: 'requestId',
-    description: '친구 요청의 고유 번호',
-  })
-  @ApiResponse({
-    type: ResponseEntity,
-  })
   @Patch('/requested/:requestId')
   async delete(
     @Param('requestId') friendRequestId: number,

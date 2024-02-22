@@ -1,15 +1,17 @@
-
-import { IsBoolean, IsNumber} from "class-validator";
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
+import { User } from 'src/auth/user.entity';
 
 export class GameResultDto {
-    @IsNumber()
-    roleId: number;
+  @IsNumber()
+  roleId: number;
 
+  userSession: string;
 
-    userSession: string;
+  roomSession: string;
 
-    roomSession: string;
+  @IsBoolean()
+  isWin: boolean;
 
-    @IsBoolean()
-    isWin: boolean;
+  @IsOptional()
+  user: User | null;
 }

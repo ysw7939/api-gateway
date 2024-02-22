@@ -1,20 +1,33 @@
-import { Body, Controller, Post, UseGuards, ValidationPipe } from '@nestjs/common';
-import { GameService } from './game.service';
+import {
+  Body,
+  Controller,
+  Inject,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
 import { GameResultDto } from './dto/game.result.create.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ResponseEntity } from 'src/configs/res/ResponseEntity';
+
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('game')
 @UseGuards(AuthGuard())
 export class GameController {
-    constructor(private gameService: GameService) { }
+  constructor(
+    @Inject('GAME')
+    private readonly gameClient: ClientProxy,
+  ) {}
 
-    @Post('/result')
-    async create(@Body(ValidationPipe) gameResultDto: GameResultDto, @GetUser() user: User): Promise<ResponseEntity<string>> {
-        await this.gameService.gameRecord(gameResultDto, user);
-        return ResponseEntity.OK();
-    }
+  @Post('/result')
+  async create(
+    @Body(ValidationPipe) gameResultDto: GameResultDto,
+    @GetUser() user: User,
+  ) {
+    gameResultDto.user = user;
+    return await this.gameClient.send('create', gameResultDto);
+  }
 }

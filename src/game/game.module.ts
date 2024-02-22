@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Game } from './game.entity';
 import { GameRepository } from './game.repository';
 import { RoleRepository } from './role.repository';
-import { UserRepository } from 'src/auth/user.respository';
 import { Role } from './role.entity';
 import { AuthModule } from 'src/auth/auth.module';
 
@@ -15,6 +14,6 @@ import { AuthModule } from 'src/auth/auth.module';
     AuthModule
   ],
   controllers: [GameController],
-  providers: [GameService, GameRepository, RoleRepository, UserRepository]
+  providers: [GameService, GameRepository, RoleRepository]
 })
 export class GameModule {}

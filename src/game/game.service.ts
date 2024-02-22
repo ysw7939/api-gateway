@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GameRepository } from './game.repository';
 import { RoleRepository } from './role.repository';
-import { UserRepository } from 'src/auth/user.respository';
 import { GameResultDto } from './dto/game.result.create.dto';
 import { Game } from './game.entity';
 import { User } from 'src/auth/user.entity';
